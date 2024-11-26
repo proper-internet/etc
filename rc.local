@@ -15,17 +15,17 @@
   elapsed=0
   interval=2
   while true ; do
-		dmesg | grep "GPON-ONU-34-20BI"
-		if [ $? -eq 0 ]; then
-			ifup wan wan6
-			break
-		fi
-		sleep $interval
-		elapsed=$((elapsed + interval))
-		if [ $elapsed -gt 59 ]; then
-			break
-		fi
-	done
+    dmesg | grep "GPON-ONU-34-20BI"
+    if [ $? -eq 0 ]; then
+      ifup wan wan6
+      break
+    fi
+    sleep $interval
+    elapsed=$((elapsed + interval))
+    if [ $elapsed -gt 59 ]; then
+      break
+    fi
+  done
 ) &
 
 exit 0
