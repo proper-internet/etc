@@ -1,0 +1,59 @@
+
+config interface 'loopback'
+	option device 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
+
+config globals 'globals'
+	option ula_prefix 'auto'
+	option packet_steering '2'
+	option steering_flows '512'
+
+config device
+	option name 'br-lan'
+	option type 'bridge'
+	list ports 'lan1'
+	list ports 'lan2'
+	list ports 'lan3'
+	list ports 'eth1'
+
+config interface 'lan'
+	option device 'br-lan'
+	option proto 'static'
+	option ipaddr '192.168.1.1'
+	option netmask '255.255.255.0'
+	option ip6assign '60'
+
+config device
+	option name 'br-wan'
+	option type 'bridge'
+	list ports 'wan'
+	list ports 'eth2'
+
+config device
+	option name 'wan'
+
+config device
+	option name 'eth2'
+
+config interface 'wan'
+	option device 'modem'
+	option proto 'pppoe'
+	option username 'username@t-online.de'
+	option password '51428761'
+	option ipv6 '1'
+	option peerdns '0'
+	option keepalive '30 15'
+	option auto '0'
+
+config interface 'wan6'
+	option device 'pppoe-wan'
+	option proto 'dhcpv6'
+	option auto '0'
+
+config device
+	option type '8021q'
+	option ifname 'eth2'
+	option vid '7'
+	option name 'modem'

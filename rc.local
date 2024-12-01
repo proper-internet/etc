@@ -1,0 +1,31 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+# enable DBDC on MT7615
+(
+  sleep 10
+  wifi down
+  sleep 5
+  echo 1 > /sys/kernel/debug/ieee80211/phy0/mt76/dbdc
+  wifi up
+) &
+
+# delay bringing up wan until the gpon sfp is ready
+(
+  elapsed=0
+  interval=2
+  while true ; do
+    dmesg | grep "GPON-ONU-34-20BI"
+    if [ $? -eq 0 ]; then
+      ifup wan wan6
+      break
+    fi
+    sleep $interval
+    elapsed=$((elapsed + interval))
+    if [ $elapsed -ge 60 ]; then
+      break
+    fi
+  done
+) &
+
+exit 0
